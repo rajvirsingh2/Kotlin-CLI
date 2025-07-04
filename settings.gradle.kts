@@ -1,1 +1,1 @@
-root-project.name = "Kotlin-CLI "
+rootProject.name = "Kotlin-CLI "

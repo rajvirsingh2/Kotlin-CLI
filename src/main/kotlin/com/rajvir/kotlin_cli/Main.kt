@@ -3,32 +3,21 @@ package com.rajvir.kotlin_cli
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
-import com.rajvir.kotlin_cli.commands.*
+import com.rajvir.kotlin_cli.commands.fs.*
+import com.rajvir.kotlin_cli.commands.kv.*
 
-
-fun main(args: Array<String>) {
-    RootCommand()
-        .subcommands(
-            FileCommands().subcommands(
-                FileCreateCommand(),
-                FileDeleteCommand(),
-                FileCopyCommand()
-            ),
-            DirCommands().subcommands(
-                DirCreateCommand(),
-                DirDeleteCommand()
-            ),
-            AppCommands().subcommands(
-                AppOpenCommand()
-            ),
-            StartShellCommand()
-        )
-        .main(args)
+class Kv:CliktCommand(){
+    override fun run() {
+        echo("Current directory: ${currentDirectory.absolutePath}")
+        echo("No subcommand was used. Use --help for a list of commands.")
+    }
 }
 
-
-class RootCommand : CliktCommand() {
-    override fun run() {
-        // Can show default help or just remain empty
-    }
+fun main(args: Array<String>){
+    Kv().subcommands(
+        //K-V commands
+        Set(), Get(), List(),
+        //File manipulation commands
+        CreateFile(), DeleteFile(), WriteFile(), ReadFile(), Cd()
+    ).main(args)
 }

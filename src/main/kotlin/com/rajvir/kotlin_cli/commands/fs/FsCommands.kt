@@ -3,11 +3,12 @@ package com.rajvir.kotlin_cli.commands.fs
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.rajvir.kotlin_cli.currentDirectory
+import com.rajvir.kotlin_cli.storage.Store
 import java.io.File
 
 //Here File-System manipulation commands are specified
 
-class CreateFile:CliktCommand(name = "create file"){
+class CreateFile:CliktCommand(name = "create-file"){
     private val fileName by argument(help = "Name of the file to create")
 
     override fun run() {
@@ -22,7 +23,7 @@ class CreateFile:CliktCommand(name = "create file"){
 }
 
 
-class DeleteFile : CliktCommand(name = "delete file"){
+class DeleteFile : CliktCommand(name = "delete-file"){
     val filename by argument(help = "The name of the file to delete")
     override fun run() {
         val file = File(currentDirectory, filename)
@@ -60,15 +61,18 @@ class ReadFile : CliktCommand(name = "read"){
     }
 }
 
-class Cd : CliktCommand(){
-    val path by argument(help = "The directory to move to (e.g., '..', 'subdir', '/home/user')")
+class Cd : CliktCommand(name = "cd") {
+    private val path by argument(help = "Directory to move to")
+
     override fun run() {
-        val newDir = File(currentDirectory, path).canonicalFile
-        if(newDir.isDirectory){
-            currentDirectory = newDir
-            echo("Current directory changed to: ${currentDirectory.absolutePath}")
-        }else{
-            echo("❌ Error: '${newDir.absolutePath}' is not a valid directory.", err = true)
+        val target = File(currentDirectory, path).canonicalFile
+        if (target.isDirectory) {
+            currentDirectory = target
+            Store.setCurrentDir(target)        //persistence
+            echo("Current directory changed to: ${target.absolutePath}")
+        } else {
+            echo("❌ Error: '${target.absolutePath}' is not a valid directory.", err = true)
+            currentContext.exitProcess(1)
         }
     }
 }

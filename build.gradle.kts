@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.9.23"
     application
+    kotlin("plugin.serialization") version "1.9.23"
 }
 
 group = "com.rajvir.kotlin_cli"
@@ -11,6 +12,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.0")
     implementation(kotlin("stdlib-jdk8"))
     implementation("com.github.ajalt.clikt:clikt:5.0.1")
    // optional support for rendering markdown in help messages

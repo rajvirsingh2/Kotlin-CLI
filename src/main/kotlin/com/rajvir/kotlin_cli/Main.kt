@@ -5,6 +5,10 @@ import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
 import com.rajvir.kotlin_cli.commands.fs.*
 import com.rajvir.kotlin_cli.commands.kv.*
+import com.rajvir.kotlin_cli.storage.Store
+import java.io.File
+
+var currentDirectory: File = Store.currentDir()
 
 class Kv:CliktCommand(){
     override fun run() {

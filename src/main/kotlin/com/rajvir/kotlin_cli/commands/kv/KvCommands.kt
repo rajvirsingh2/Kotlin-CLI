@@ -1,15 +1,21 @@
 package com.rajvir.kotlin_cli.commands.kv
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.requireObject
 import com.github.ajalt.clikt.parameters.arguments.argument
+import com.rajvir.kotlin_cli.AppContext
 import com.rajvir.kotlin_cli.storage.Store
 
 //Commands for all key-value store functionalities
 
 class Set: CliktCommand(){
+    private val context by requireObject<AppContext>()
     private val key by argument(help = "The key to store the value.")
     private val value by argument(help = "The value to save.")
     override fun run() {
+        if(context.verbose){
+            echo("Verbose: Saving key='$key', value='$value' to $Store")
+        }
         Store[key] = value
         echo("Stored $key to $value")
     }

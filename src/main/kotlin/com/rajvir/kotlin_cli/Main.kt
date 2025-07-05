@@ -1,19 +1,36 @@
 package com.rajvir.kotlin_cli
 
-import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.main
-import com.github.ajalt.clikt.core.subcommands
+import com.github.ajalt.clikt.core.*
+import com.github.ajalt.clikt.parameters.options.flag
+import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.versionOption
 import com.rajvir.kotlin_cli.commands.fs.*
 import com.rajvir.kotlin_cli.commands.kv.*
-import com.rajvir.kotlin_cli.storage.Store
-import java.io.File
-
-var currentDirectory: File = Store.currentDir()
 
 class Kv:CliktCommand(){
+
+    init{
+        // This automatically adds the --version flag.
+        // It reads the version from the build.gradle.kts file.
+        versionOption(version = "1.0.0")
+        context {
+            obj = AppContext()
+        }
+    }
+
+    private val config = ConfigLoader.load()
+
+    private val verbose by option("-v", "--verbose", help = "Enable verbose output.").flag(
+        default = (config.defaultLog == "DEBUG")
+    )
+
     override fun run() {
+        val context = currentContext.obj as AppContext
+        context.verbose = this.verbose
+        if (context.verbose) {
+            echo("Verbose mode is enabled.")
+        }
         echo("Current directory: ${currentDirectory.absolutePath}")
-        echo("No subcommand was used. Use --help for a list of commands.")
     }
 }
 

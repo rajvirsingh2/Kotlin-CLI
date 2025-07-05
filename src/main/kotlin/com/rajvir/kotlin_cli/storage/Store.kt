@@ -35,4 +35,9 @@ object Store{
         file.toFile().parentFile.mkdirs()
         file.toFile().outputStream().use { props.store(it, null) }
     }
+
+    fun save(){
+        Files.createDirectories(file.parent)
+        Files.newOutputStream(file).use { props.store(it, "Kotlin-CLI data") }
+    }
 }

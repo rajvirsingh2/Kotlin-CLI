@@ -39,6 +39,8 @@ fun main(args: Array<String>){
         //K-V commands
         Set(), Get(), List(),
         //File manipulation commands
-        CreateFile(), DeleteFile(), WriteFile(), ReadFile(), Cd()
+        FsCommands().subcommands(
+            CreateFile(),DeleteFile(),WriteFile(),ReadFile(),Cd(),Tree(),CheckSum(),Search(),Clean()
+        )
     ).main(args)
 }

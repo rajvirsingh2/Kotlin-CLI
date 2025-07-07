@@ -4,10 +4,17 @@ import com.github.ajalt.clikt.core.*
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.versionOption
+import com.rajvir.kotlin_cli.commands.ai.AiCommands
+import com.rajvir.kotlin_cli.commands.ai.TextSummarize
 import com.rajvir.kotlin_cli.commands.dev.*
 import com.rajvir.kotlin_cli.commands.fs.*
+import com.rajvir.kotlin_cli.commands.`fun`.Cowsay
+import com.rajvir.kotlin_cli.commands.`fun`.FunCommands
 import com.rajvir.kotlin_cli.commands.kv.*
 import com.rajvir.kotlin_cli.commands.net.*
+import com.rajvir.kotlin_cli.commands.prod.*
+import com.rajvir.kotlin_cli.commands.sec.PassGen
+import com.rajvir.kotlin_cli.commands.sec.SecurityCommands
 
 class Kv:CliktCommand(){
 
@@ -49,6 +56,18 @@ fun main(args: Array<String>){
         ),
         NetCommands().subcommands(
             Ping(), Scan(), Request(), Download()
+        ),
+        AiCommands().subcommands(
+            TextSummarize()
+        ),
+        SecurityCommands().subcommands(
+            PassGen()
+        ),
+        FunCommands().subcommands(
+            Cowsay()
+        ),
+        ProdCommands().subcommands(
+            Todo(), TodoAdd(), TodoList(), TodoDone()
         )
     ).main(args)
 }

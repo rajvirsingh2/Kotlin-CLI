@@ -24,10 +24,4 @@ object ConfigLoader{
             Config()
         }
     }
-
-    fun save(config: Config){
-        Files.createDirectories(configPath.parent)
-        val content = json.encodeToString(config)
-        Files.writeString(configPath, content)
-    }
 }

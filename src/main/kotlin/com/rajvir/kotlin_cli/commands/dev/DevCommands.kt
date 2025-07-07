@@ -1,5 +1,6 @@
 package com.rajvir.kotlin_cli.commands.dev
 
+// Import necessary libraries
 import com.charleskorn.kaml.Yaml
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
@@ -19,22 +20,26 @@ import java.net.InetSocketAddress
 import java.util.concurrent.TimeUnit
 import kotlin.io.path.createTempDirectory
 
-class DevCommands: CliktCommand(name = "dev"){
-    override fun run()=Unit
+// Base command for dev-related subcommands
+class DevCommands : CliktCommand(name = "dev") {
+    override fun run() = Unit
 }
 
-class Server: CliktCommand(){
-    private val port by option("-p","--port", help = "Port to bind the server to.").int().default(8000)
+// Simple HTTP file server
+class Server : CliktCommand() {
+    private val port by option("-p", "--port", help = "Port to bind the server to.").int().default(8000)
 
     override fun run() {
         val server = HttpServer.create(InetSocketAddress(port), 0)
-        server.createContext("/") { http->
+        server.createContext("/") { http ->
             val file = File(currentDirectory, http.requestURI.path.drop(1)).canonicalFile
             http.sendResponseHeaders(200, 0)
-            http.responseBody.use { os->
-                if(file.startsWith(currentDirectory) && file.exists()) file.inputStream().use { it.copyTo(os) } else{
+            http.responseBody.use { os ->
+                if (file.startsWith(currentDirectory) && file.exists())
+                    file.inputStream().use { it.copyTo(os) }
+                else {
                     val notFound = "<h1>404 Not Found</h1>".toByteArray()
-                    http.sendResponseHeaders(404,notFound.size.toLong())
+                    http.sendResponseHeaders(404, notFound.size.toLong())
                     os.write(notFound)
                 }
             }
@@ -42,10 +47,11 @@ class Server: CliktCommand(){
         server.start()
         echo("✅ Server started on http://localhost:$port")
         echo("Press Ctrl+C to stop.")
-        Thread.currentThread().join() //Keeps server running
+        Thread.currentThread().join() // Keeps server running
     }
 }
 
+// Command to run code snippets in multiple languages
 class RunCode : CliktCommand(name = "run-code") {
     private val language by argument(help = "Language of the snippet (js,kt,java,c,cpp,go)")
     private val inlineCode by argument(help = "Inline code snippet").optional()
@@ -73,6 +79,7 @@ class RunCode : CliktCommand(name = "run-code") {
 
         val tempDir = createTempDirectory("kotlin-cli-run").toFile()
         try {
+            // Handle supported languages
             when (language.lowercase()) {
                 "js" -> execute(listOf("node", "-e", code), tempDir)
 
@@ -115,10 +122,12 @@ class RunCode : CliktCommand(name = "run-code") {
                 else -> echo("❌ Error: Unsupported language '$language'.", err = true)
             }
         } finally {
+            // Clean up temporary files
             tempDir.deleteRecursively()
         }
     }
 
+    // Helper function to execute shell commands
     private fun execute(command: List<String>, workDir: File, onSuccess: (() -> Unit)? = null) {
         try {
             val process = ProcessBuilder(command)
@@ -144,51 +153,59 @@ class RunCode : CliktCommand(name = "run-code") {
     }
 }
 
-
-class Format: CliktCommand(){
+// Command to format JSON or YAML files
+class Format : CliktCommand() {
     private val file by argument(help = "Path to JSON or YAML file.")
+
     override fun run() {
-        val targetFile = File(currentDirectory,file)
-        if(!targetFile.exists()) return echo("❌ Error: File not found at '${targetFile.path}'", err = true)
+        val targetFile = File(currentDirectory, file)
+        if (!targetFile.exists()) return echo("❌ Error: File not found at '${targetFile.path}'", err = true)
+
         val content = targetFile.readText()
-        try{
-            val formatted = when(targetFile.extension.lowercase()){
+        try {
+            val formatted = when (targetFile.extension.lowercase()) {
                 "json" -> {
-                    val json = Json{ prettyPrint=true }
+                    val json = Json { prettyPrint = true }
                     val jsonObject = json.decodeFromString<JsonElement>(content)
                     json.encodeToString(JsonElement.serializer(), jsonObject)
                 }
-                "yml" , "yaml" ->{
+
+                "yml", "yaml" -> {
                     val ymlObject = Yaml.default.parseToYamlNode(content)
                     Yaml.default.encodeToString(ymlObject)
                 }
+
                 else -> return echo("❌ Error: Unsupported file type '${targetFile.extension}'. Use .json, .yml, or .yaml.", err = true)
             }
             echo(formatted)
-        }catch (e:Exception){
+        } catch (e: Exception) {
             echo("❌ Error formatting file: ${e.message}", err = true)
         }
     }
 }
 
+// Base Git command (acts as a group)
 class Git : CliktCommand() {
     override fun run() = Unit
 }
 
+// Command to show Git logs
 class GitLog : CliktCommand(name = "log") {
     private val count by option("-n", help = "Number of commits to show").int().default(10)
+
     override fun run() {
         runGitCommand("git log -n $count --oneline")
     }
 }
 
+// Command to show Git branches
 class GitBranches : CliktCommand(name = "branches") {
     override fun run() {
         runGitCommand("git branch")
     }
 }
 
-// Helper function to run external commands
+// Helper function to execute git commands
 private fun CliktCommand.runGitCommand(command: String) {
     try {
         val process = ProcessBuilder(command.split(" "))

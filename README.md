@@ -18,7 +18,7 @@ This CLI is organized into several command groups, each with its own set of powe
 * **`dev` (Developer Tools):** Handy tools for developers, such as a local HTTP server, a multi-language code snippet runner (supporting Java, Kotlin, C++, Go, and more), and a Git wrapper for common commands.
 * **`net` (Networking):** A collection of networking utilities, including a `ping` tool, a full HTTP client similar to `curl`, a port scanner, and a file downloader.
 * **`ai` (Artificial Intelligence):** Interact with Google's Gemini AI directly from your terminal to ask questions and get intelligent answers.
-* **`sec` (Security):** Tools for security-related tasks, including a secure password generator and a JWT token decoder.
+* **`security` (Security):** Tools for security-related tasks, including a secure password generator and a JWT token decoder.
 * **`prod` (Productivity):** A persistent, file-based To-Do list manager with `add`, `list`, and `done` commands.
 * **`fun` (Fun):** A classic `cowsay` clone to bring some levity to your terminal.
 

@@ -4,8 +4,10 @@ import com.github.ajalt.clikt.core.*
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.versionOption
+import com.rajvir.kotlin_cli.commands.dev.*
 import com.rajvir.kotlin_cli.commands.fs.*
 import com.rajvir.kotlin_cli.commands.kv.*
+import com.rajvir.kotlin_cli.commands.net.*
 
 class Kv:CliktCommand(){
 
@@ -41,6 +43,12 @@ fun main(args: Array<String>){
         //File manipulation commands
         FsCommands().subcommands(
             CreateFile(),DeleteFile(),WriteFile(),ReadFile(),Cd(),Tree(),CheckSum(),Search(),Clean()
+        ),
+        DevCommands().subcommands(
+            Server(), RunCode(), Format(), Git().subcommands(GitLog(), GitBranches())
+        ),
+        NetCommands().subcommands(
+            Ping(), Scan(), Request(), Download()
         )
     ).main(args)
 }

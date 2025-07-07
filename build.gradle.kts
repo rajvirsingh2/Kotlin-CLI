@@ -18,6 +18,7 @@ dependencies {
    // optional support for rendering markdown in help messages
     implementation("com.github.ajalt.clikt:clikt-markdown:5.0.1")
     implementation("com.github.ajalt.mordant:mordant:2.2.0")
+    implementation("com.charleskorn.kaml:kaml:0.55.0")
 }
 
 application {

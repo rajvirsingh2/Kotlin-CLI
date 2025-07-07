@@ -134,7 +134,7 @@ kv fs tree --depth 1
 kv net http [https://api.github.com](https://api.github.com)
 
 # Generate a secure 24-character password
-kv sec pass-gen -l 24
+kv security pass-gen -l 24
 
 # Add an item to your to-do list
 kv prod todo add "Read the Kotlin CLI README"

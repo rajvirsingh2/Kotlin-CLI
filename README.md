@@ -1,8 +1,5 @@
 # Kotlin CLI: The All-in-One Command-Line Toolkit
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/rajvir31/Kotlin-CLI)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 Welcome to **Kotlin CLI**, a powerful, multipurpose command-line interface built with Kotlin and the Clikt library. This tool is designed to be a developer's Swiss Army knife, providing a wide range of utilities from file system manipulation and networking to AI-powered queries and productivity workflows, all accessible from a single, consistent interface.
 
 This project was built to demonstrate a deep understanding of modern software engineering principles, including clean architecture, dependency management, multi-platform deployment via Docker, and integration with external APIs.
@@ -151,7 +148,7 @@ If you want to modify the code and build the project yourself, you can clone the
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/rajvir31/Kotlin-CLI.git](https://github.com/rajvir31/Kotlin-CLI.git)
+    git clone [https://github.com/rajvirsingh2/Kotlin-CLI.git](https://github.com/rajvirsingh2/Kotlin-CLI.git)
     cd Kotlin-CLI
     ```
 
@@ -162,9 +159,9 @@ If you want to modify the code and build the project yourself, you can clone the
 
 3.  **Run commands locally:**
     ```bash
-    ./gradlew run -- <your commands here>
+    ./gradlew run --args="<your commands here>" 
     # Example:
-    ./gradlew run -- fs tree
+    ./gradlew run --args="fs tree"
     ```
 
 ---
